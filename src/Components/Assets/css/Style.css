@@ -1,0 +1,990 @@
+/* Sidebar.css */
+/* .ant-layout-sider {
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  } */
+  
+  .ant-menu-item {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+
+  /* For mobile view */
+@media (max-width: 768px) {
+   /* .ant-layout-sider {
+    width: 80px !important; 
+  }  */
+
+  /* .ant-menu-inline {
+    display: none; 
+  } */
+}
+.ant-card .ant-card-body {
+  padding: 13px !important;
+}
+
+
+
+
+
+
+.custom-scrollbar {
+  scrollbar-width: none; /* Hide scrollbar by default for Firefox */
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px; /* Reduce the scrollbar width */
+  height: 6px; /* Reduce the scrollbar height for horizontal scrolling */
+  display: none; /* Initially hide the scrollbar */
+}
+
+.custom-scrollbar:hover {
+  scrollbar-width: thin; /* Show thin scrollbar for Firefox on hover */
+  scrollbar-color: rgb(218, 227, 250) transparent; /* Grey thumb with transparent track for Firefox */
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar {
+  width: 2px; /* Visible thin scrollbar when hovering */
+  height: 6px; /* Visible thin horizontal scrollbar */
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track when visible */
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: lightgray; /* Grey thumb color */
+  border-radius: 10px; /* Fully rounded corners for thumb (circle ends) */
+  min-height: 20px; /* Ensure thumb is not too small */
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb:hover {
+  background-color: lightgray; /* Darker grey on hover */
+}
+.ant-form-item {
+  margin-bottom: 0px !important;
+}
+/* taggeneration */
+/* CSS for the responsive card layout */
+
+
+.card-item {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  min-width: 120px; /* Ensuring minimum width */
+  background-color: #363668;
+}
+
+/* Ensure text stays on the same line inside each card-item */
+.card-item .ant-typography {
+  margin: 0 !important; /* Remove default margins */
+}
+
+/* For mobile screens, adjust the flex layout */
+@media (max-width: 767px) {
+  .card-content {
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      justify-content: space-around; /* Adjust space for better alignment */
+  }
+
+  .card-item {
+      flex: 1 1 100%; /* Each item will take full width */
+      min-width: auto; /* No min-width to allow proper wrapping */
+      padding: 2px !important;
+
+  }
+}
+.card-item {
+ 
+  padding: 8px !important;
+
+}
+
+/* For tablets and larger screens, maintain the layout as-is */
+@media (min-width: 768px) {
+  .card-content {
+      flex-wrap: nowrap; /* Keep items in one row */
+  }
+}
+/* product detailes */
+.product-details-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .product-details-grid {
+      grid-template-columns: 1fr; /* Stack items in one column for smaller screens */
+      gap: 10px;
+  }
+}
+/* tag genration  */
+/* Global Styles for TagGeneration */
+.tag-generation-columns .card-item {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 1200px) {
+  .tag-generation-columns .card-item {
+      display: block;
+      width: 100%;
+      text-align: left; /* Keep text left aligned in larger screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .tag-generation-columns .card-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+  }
+  .ant-row {
+      margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .tag-generation-columns .card-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+  }
+  .ant-row {
+      margin-left: 0 !important;
+  }
+}
+/* .ant-table-thead > tr > th {
+  background-color: #4FBE91 !important;
+} */
+/* Custom scrollbar for the table */
+.custom-scroll .ant-table-body {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #c1c1c1 transparent;
+}
+
+.custom-scroll .ant-table-body::-webkit-scrollbar {
+  width: 5px; /* Thin scrollbar */
+  height: 5px;
+}
+
+.custom-scroll .ant-table-body::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar color */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.custom-scroll .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker color on hover */
+}
+
+.custom-scroll .ant-table-body::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+/* .ant-table-wrapper .ant-table.ant-table-small .ant-table-tbody>tr>td{
+  padding: 1px 8px !important;
+} */
+.ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload-list.ant-upload-list-picture-card .ant-upload-list-item
+{
+  height: 66% !important;
+}
+/* table reports */
+
+.filter-container {
+  padding: 16px;
+  background: linear-gradient(135deg, #96bbf6, #4e73df);
+  border-radius: 8px;
+}
+
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-section .ant-select,
+.filter-section .ant-input-number,
+.filter-section .ant-picker {
+  flex: 1 1 calc(33.333% - 16px);
+  min-width: 120px;
+}
+
+.filter-section .ant-select:hover,
+.filter-section .ant-input-number:hover,
+.filter-section .ant-picker:hover {
+  border-color: #c1c0f4;
+}
+
+.custom-table .ant-table-thead > tr > th,
+.custom-table .ant-table-tbody > tr > td {
+  font-size: 12px !important;
+  }
+
+.custom-table .ant-table-thead > tr > th {
+  background-color: #52BD91 !important;
+  font-weight: bold;
+}
+
+/* .custom-table .ant-table-tbody > tr > td {
+  padding: 8px;
+} */
+
+.custom-table .ant-table-tbody > tr:hover > td {
+  background-color: #e6f7ff;
+}
+
+.custom-table .ant-table {
+  border-radius: 8px;
+}
+
+.custom-table .ant-table-wrapper {
+  overflow-x: auto;
+}
+
+.custom-table .ant-table-wrapper::-webkit-scrollbar {
+  height: 2px; /* Decreased height of the scrollbar */
+}
+
+.custom-table .ant-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #d9d9d9;
+  border-radius: 2px;
+}
+
+.custom-table .ant-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #bfbfbf;
+}
+.table-responsive {
+  overflow: auto;
+  scrollbar-width: none; /* Hide scrollbar by default for Firefox */
+}
+
+.table-responsive::-webkit-scrollbar {
+  width: 7px;
+  height: 7px; /* Ensure scrollbar is hidden initially */
+  display: none; /* Initially hide the scrollbar */
+}
+
+.table-responsive:hover {
+  scrollbar-width: thin; /* Show thin scrollbar for Firefox on hover */
+  scrollbar-color: #888 #f1f1f1; /* Thumb and track color for Firefox */
+}
+
+.table-responsive:hover::-webkit-scrollbar {
+  display: block; /* Show scrollbar on hover */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.scroll-horizontal {
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space: nowrap;
+  margin: 0 auto;
+  scrollbar-width: none; /* Hide scrollbar by default for Firefox */
+}
+
+.scroll-horizontal::-webkit-scrollbar {
+  height: 4px;
+  display: none; /* Initially hide the scrollbar */
+}
+
+.scroll-horizontal:hover {
+  scrollbar-width: thin; /* Show thin scrollbar for Firefox on hover */
+  scrollbar-color: #d1cdcd #f1f1f1; /* Thumb and track color for Firefox */
+}
+
+.scroll-horizontal:hover::-webkit-scrollbar {
+  display: block; /* Show scrollbar on hover */
+}
+
+.scroll-horizontal::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.scroll-horizontal::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+/* datepickers */
+.date-picker {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #0C1154;
+}
+
+.date-picker:focus {
+  border-color: #0C1154;
+  box-shadow: 0 0 5px rgba(12, 17, 84, 0.5);
+}
+
+.date-picker-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.date-picker-label {
+  font-weight: 600;
+  color: #0C1154;
+}
+.react-datepicker__month {
+  margin: 0 !important;
+}
+/* sidebar colur */
+/* .ant-menu-light .ant-menu-item {
+  color: #acc4e2 !important;
+
+}
+.ant-menu-item-selected {
+  background-color: #52BD91 !important;
+}
+.icon-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+/* dashboard */
+
+/* Style.css */
+
+/* .custom-scrollbar .ant-menu-submenu-title {
+  font-size: 12px; 
+  padding-left: 10px !important; 
+}
+
+.custom-scrollbar .ant-menu-item {
+  font-size: 12px; 
+  padding-left: 10px !important; 
+} */
+.ant-menu-submenu-popup .ant-menu-vertical.ant-menu{
+  background-color: #150A4E;
+}
+.custom-date-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    padding: 5px 10px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.custom-date-input:hover {
+    border-color: #9fc8ea;
+}
+
+.custom-date-input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.calendar-icon {
+    margin-left: 8px;
+    color: #a3ccf2;
+}
+/* Basic table styling */
+/* .sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1e266d;
+  color: #fff;
+} */
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #18204d;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  margin-right: 0.5rem;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.custom-menu {
+  flex-grow: 1;
+  background: #ebecf0;
+  
+}
+
+.custom-menu .ant-menu-item-selected {
+  background: #7574a1 !important;
+}
+
+.menu-item-with-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-item-with-badge .badge {
+  background: #605cfd;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.1rem 0.5rem;
+  border-radius: 12px;
+}
+/* 
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #18204d;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+} */
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.profile-info {
+  color: #fff;
+}
+
+.profile-name {
+  font-weight: bold;
+}
+
+.profile-role {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+/* Style.css */
+.ant-layout-sider .ant-layout-sider-children {
+  background: linear-gradient(180deg, #150A4E 0%, #150A4E 100%);
+
+
+}
+/* button */
+.animated-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  background-color: #443a72; /* Light initial color */
+  color: #fafafa; /* Dark text for contrast */
+  /* font-weight: bold; */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 1; /* Ensure text is above pseudo-element */
+}
+
+.animated-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #4a90e2, #8b91e6); /* Bright gradient colors */
+  transition: all 0.3s ease;
+  z-index: 0; /* Ensure animation is behind text */
+}
+
+.animated-button:hover::before {
+  left: 0; /* Slide in from left */
+}
+
+.animated-button span {
+  position: relative;
+  z-index: 2; /* Ensure text is always above the pseudo-element */
+}
+
+.animated-button:hover {
+  color: white; /* Bright text on hover */
+}
+
+.table-row {
+  height: 50px !important; /* Adjust the height as needed */
+}
+.blue-background-column {
+  background-color: #d5edf8; /* Blue color */
+  color: rgb(63, 51, 51); /* White text for contrast */
+  text-align: center; /* Center align for text */
+  font-weight: bold !important; /* Bold text */
+}
+.blue-background-fircolumn {
+  background-color: #4A90E2 !important; /* Blue color */
+  color: rgb(252, 250, 250) !important; /* White text for contrast */
+  text-align: center; /* Center align for text */
+  font-weight: bold !important; /* Bold text */
+}
+
+.blue-background-row .blue-background-column {
+  background-color: #d5edf8; 
+  color: #0e0606; 
+}
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+  background-color: #d5edf8;
+  color: #0e0606; 
+
+}
+.ant-table-tbody > tr:hover > td.blue-background-column {
+  background-color: #d5edf8 !important; /* Change this to your desired hover color */
+}
+.tbaletotals {
+background-color: #f5f5f5;
+font-weight: bold;
+}
+/* Prevent table row background color from changing on hover */
+/* Disable table row hover background */
+.ant-table-tbody > tr:hover > td {
+  background: none !important;
+}
+
+/* sidebar */
+/* Background image and sidebar styling */
+/* Sidebar scrollable content */
+.sidebar-menu {
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Transition effects */
+.ant-layout-sider {
+  transition: all 0.1s ease;
+}
+
+.ant-menu-item {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.ant-menu-item:hover {
+  background-color: #150A4E !important;
+  color: #fff !important;
+}
+
+
+/* Header hover effects */
+.ant-avatar {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.ant-avatar:hover {
+  transform: scale(1.1);
+}
+.ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+  background-color: #555e9f;
+}
+/* login */
+.login-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #f7f8f8, #ffffff);
+}
+
+.login-wrapper {
+  display: flex;
+  width: 70%;
+  height: 500px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.welcome-section {
+  background: #031f3c;
+  color: #fff;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.register-button {
+  background: #fff;
+  color: #090542;
+  border: none;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.register-button:hover {
+  background: #070431;
+  color: #fff;
+}
+
+.login-section {
+  flex: 1;
+  background: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-section h2 {
+  font-size: 24px;
+  color: #a9a4f7;
+}
+
+.login-section p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.login-button {
+  background: #050f46;
+  color: #fff;
+  width: 100%;
+}
+
+.login-button:hover {
+  background: #236c48;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* img upload */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 8px;
+}
+
+.image-container:hover .hover-overlay {
+  opacity: 1;
+}
+
+.icon {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+}
+
+.react-datepicker__input-container {
+  width: 78% !important;
+}
+.bgcolur {
+  background: linear-gradient(90deg, rgba(52,71,204,0.7259278711484594) 0%, rgba(32,15,147,0.7875525210084033) 31%, rgba(110,189,165,0.8239670868347339) 100%);
+}
+
+.ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select {
+  width: 130px !important;
+  height: 75px !important;
+}
+.bgcolurimg {
+
+  background: linear-gradient(90deg, rgba(131,58,180,0.3981967787114846) 0%, rgba(253,29,29,0.4430147058823529) 50%, rgba(252,176,69,0.5634628851540616) 100%);
+}
+  .bgcolurtag {
+    background: linear-gradient(0deg, rgba(34,145,195,0.4318102240896359) 0%, rgba(253,45,70,0.32816876750700286) 100%);
+
+  }
+  .ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload-list.ant-upload-list-picture-card .ant-upload-list-item {
+    height: 100% !important;
+  }
+  /* Apply styles only to the specific table */
+.custom-stone-table .ant-table-thead > tr > th {
+    background-color:rgb(50, 82, 58) !important; /* Blue background */
+    color: rgb(224, 221, 221) !important; /* White text */
+}
+.custom-stone-table .table-row {
+  height: 0px !important; /* Adjust the height as needed */
+}
+
+.ant-modal .ant-modal-content{
+  padding: 7px 15px !important;
+}
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.rotating-icon {
+    animation: rotate 2s linear infinite;
+}
+.ant-card .ant-card-head {
+  min-height: 30px !important;
+}
+.custom-table .ant-table-content {
+    height: 200px;
+    overflow: auto !important;
+}
+.custom-table .ant-table-content[data-records="5"] {
+    height: 300px !important;
+}
+.custom-table .ant-table-body {
+  max-height: 50vh; /* Adjust the height dynamically */
+  overflow-y: auto;
+}
+
+.custom-card .ant-card-body {
+  padding: 5px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9f9f9; /* Light background */
+  border-radius: 8px;
+  font-weight: bold;
+  margin: 0 5px;
+}
+/* Main container */
+.stone-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Heading */
+.stone-details-heading {
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* Cards wrapper */
+.stone-details-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.customedetailescard .ant-card-body {
+  padding: 12px !important;
+
+}
+.custometagnocard .ant-card-body {
+  padding: 5px !important;
+
+}
+
+.customeproductcard .ant-card-body {
+  padding: 7px !important;
+
+}
+.customestonetbale .ant-card-head {
+  background-color: #236c48 !important;
+}
+/* Individual cards */
+.custom-stone-card .ant-card-body {
+  width: 140px; /* Default fixed width */
+  padding: 5px !important;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card labels */
+.custom-stone-label {
+  font-size: 12px;
+  display: block;
+}
+
+/* Card values */
+.custom-stone-value {
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stone-details-container {
+      align-items: center; /* Center align on smaller screens */
+  }
+
+  .stone-details-heading {
+      text-align: center; /* Center the heading */
+  }
+
+  .stone-details-cards {
+      justify-content: center; /* Center cards in smaller screens */
+  }
+
+  .custom-stone-card {
+      width: 100px; /* Reduce card width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-stone-card {
+      width: 90px; /* Further reduce card size for mobile */
+      font-size: 14px;
+  }
+}
+.customstonedetaile-table .ant-table-thead > tr > th {
+  background-color: rgb(216, 211, 211) !important;
+  font-weight: bold;
+}
+
+
+.align-right-column {
+  text-align: right !important;
+}
+.custom-small-table .ant-table {
+  font-size: 12px !important;
+}
+
+.custom-small-table .ant-table-thead > tr > th
+ {
+  font-size: 11px !important;
+  font-weight: bold !important;
+  padding: 4px 8px; /* Reduce padding for a compact look */
+}
+/* member card */
+/* Custom Table Styles */
+.custom-small-table {
+  background-color: #f4f7fc; 
+  border-radius: 8px; /* Rounded corners for the table */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border: 1px solid #ddd; /* Light border around the table */
+}
+
+.custom-small-table .ant-table-thead > tr > th {
+  background-color: #4a90e2; /* Header background color */
+  color: #fff; /* White text color for header */
+  font-weight: 600; /* Bold font for header */
+  text-align: center; /* Center-align text in header */
+}
+
+.custom-small-table .ant-table-tbody > tr:nth-child(odd) {
+  background-color: #f9fafb; /* Light gray background for odd rows */
+}
+
+.custom-small-table .ant-table-tbody > tr:nth-child(even) {
+  background-color: #e0e7ff; /* Light blue background for even rows */
+}
+
+.custom-small-table .ant-table-tbody > tr:hover {
+  background-color: #d1d5db; /* Slightly darker background for hover effect */
+}
+
+.custom-small-table .ant-table-tbody > tr > td {
+  text-align: center; /* Center-align text in body cells */
+  padding: 12px; /* Add some padding inside table cells */
+}
+
+/* Alternating Text Colors for Columns */
+.custom-small-table .ant-table-tbody > tr > td:nth-child(odd) {
+  color: #333; /* Dark text color for odd columns */
+}
+
+.custom-small-table .ant-table-tbody > tr > td:nth-child(even) {
+  color: #4a90e2; /* Blue text color for even columns */
+}
+
+.custom-small-table .ant-table-bordered .ant-table-cell {
+  border-right: 1px solid #e8e8e8; /* Light border between cells */
+}
+
+.custom-small-table .ant-table-scroll .ant-table-body {
+  background-color: #fff; /* White background for the table body */
+  border-radius: 8px; /* Rounded corners for the table body */
+}
+.custom-popover {
+  min-width: 600px !important;  /* Adjust this value as needed */
+  max-width: 90% !important;
+}
+
+.custom-popover .ant-popover-inner {
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .custom-popover {
+    min-width: 95vw !important;
+    max-width: 125vw !important;
+  }
+}
