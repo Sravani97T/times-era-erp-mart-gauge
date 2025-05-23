@@ -339,32 +339,25 @@ return (
             >
                 <Row gutter={[16, 16]}>
                     <Col xs={24} sm={12}>
-                        <Form.Item
-                            name="mname"
-                            label="Main Product"
-                            rules={[{ required: true, message: "Main Product is required" }]}
-                        >
-                            <Input
-                                placeholder="Main Product"
-                                ref={mnameRef}
-                                onPressEnter={(e) => handleEnterPress(e, purityRef)}
-                                style={{ display: "none" }} // Hide the Input if using Select
-                            />
-                            <Select
-                                showSearch
-                                placeholder="Select Main Product"
-                                options={mainProductOptions}
-                                onChange={(value) => form.setFieldsValue({ mname: value })}
-                                value={form.getFieldValue("mname")}
-                                ref={mnameRef}
-                                 onInputKeyDown={e => {
-                                            if (e.key === "Enter") handleEnterPress(e, purityRef);
-                                        }}
-                                filterOption={(input, option) =>
-                                    (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-                                }
-                            />
-                        </Form.Item>
+                       <Form.Item
+    name="mname"
+    label="Main Product"
+    rules={[{ required: true, message: "Main Product is required" }]}
+>
+    <Select
+        showSearch
+        placeholder="Select Main Product"
+        options={mainProductOptions}
+        ref={mnameRef}
+        onInputKeyDown={e => {
+            if (e.key === "Enter") handleEnterPress(e, purityRef);
+        }}
+        filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+        }
+    />
+</Form.Item>
+
                     </Col>
                     <Col xs={24} sm={12}>
                         <Form.Item

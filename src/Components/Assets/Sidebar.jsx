@@ -78,6 +78,8 @@ const Sidebar = ({ collapsed }) => {
         { key: "2-23", label: <Link to="/Product-name" style={{ color: "#fff" }}>Product Name</Link> },
         { key: "2-24", label: <Link to="/purity-master" style={{ color: "#fff" }}>Purity Master</Link> },
         { key: "2-25", label: <Link to="/entry-mast" style={{ color: "#fff" }}>Entry Mast</Link> },
+        { key: "2-26", label: <Link to="/doc-charges" style={{ color: "#fff" }}>Doc Charges</Link> },
+        { key: "2-27", label: <Link to="/loanintrest-rate" style={{ color: "#fff" }}>Loan IntrestRate</Link> },
 
       ],
     },

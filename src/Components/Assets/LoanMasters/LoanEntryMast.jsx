@@ -49,7 +49,39 @@ const LoanEntryMast = () => {
     });
 
 
+    // Auto-calculate Net Wt & Amount or Rate
+    useEffect(() => {
+        const gross = parseFloat(gwt) || 0;
+        const less = parseFloat(swt) || 0;
+        const net = gross - less;
+        if (!isNaN(net)) setNwt(net.toFixed(3));
+    }, [gwt, swt]);
 
+    useEffect(() => {
+        const net = parseFloat(nwt);
+        const r = parseFloat(rate);
+        const a = parseFloat(amount);
+
+        if (net && !isNaN(net)) {
+            if (r && !isNaN(r)) {
+                setAmount((net * r).toFixed(2));
+            } else if (a && !isNaN(a)) {
+                setRate((a / net).toFixed(2));
+            }
+        }
+    }, [nwt, rate, amount]);
+
+    const labelStyle = {
+        textAlign: "center",
+        color: "white",
+        display: "block",
+        fontWeight: "500",
+        marginBottom: 4,
+    };
+
+    const inputStyle = {
+        textAlign: "center"
+    };
     const validatePan = (value) => {
         const pattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
         if (!value) {
@@ -198,13 +230,28 @@ const LoanEntryMast = () => {
 
     const columns = [
         { title: "Item Name", dataIndex: "itemName", key: "itemName" },
-        { title: "Purity", dataIndex: "purity", key: "purity" },
-        { title: "Pieces", dataIndex: "pieces", key: "pieces" },
-        { title: "GWT", dataIndex: "gwt", key: "gwt" },
-        { title: "NWT", dataIndex: "nwt", key: "nwt" },
-        { title: "SWT", dataIndex: "swt", key: "swt" },
-        { title: "Rate", dataIndex: "rate", key: "rate" },
-        { title: "Amount", dataIndex: "amount", key: "amount" },
+        {
+            title: "Purity", dataIndex: "purity", key: "purity", align: "center",
+        },
+        {
+            title: "Pieces", dataIndex: "pieces", key: "pieces", align: "center",
+        },
+        {
+            title: "Gross.Wt", dataIndex: "gwt", key: "gwt", align: "right",
+        },
+        {
+            title: "Less.Wt", dataIndex: "swt", key: "swt", align: "right",
+        },
+
+        {
+            title: "Net.Wt", dataIndex: "nwt", key: "nwt", align: "right",
+        },
+        {
+            title: "Rate", dataIndex: "rate", key: "rate", align: "right",
+        },
+        {
+            title: "Amount", dataIndex: "amount", key: "amount", align: "right",
+        },
     ];
     // Refs for entry fields
     const itemNameRef = useRef();
@@ -284,6 +331,9 @@ const LoanEntryMast = () => {
             title: "S.No",
             key: "sno",
             render: (_, __, idx) => idx + 1,
+            width: 50,
+            align: "center",
+            className: 'first-col-green'
         },
         ...columns,
         {
@@ -333,11 +383,11 @@ const LoanEntryMast = () => {
                     }, 0);
                 }}
             >
-                <div style={{ background: "#E6F4FF", padding: "5px", borderRadius: 5 }}>
+                <div style={{ background: "#324c6c", padding: "5px", borderRadius: 5 }}>
                     <Row justify="space-between" align="middle">
                         <Col>
-                            <div style={{ display: "flex", alignItems: "center" }}>
-                                <label style={{ fontWeight: 500, marginRight: 8 }}>Loan No</label>
+                            <div style={{ display: "flex", alignItems: "center", marginLeft: "5px" }}>
+                                <label style={{ fontWeight: 500, marginRight: 8, color: "white" }}>Loan No</label>
                                 <Form.Item
                                     name="loanno"
                                     rules={[{ required: true, message: "Loan No is required" }]}
@@ -356,7 +406,7 @@ const LoanEntryMast = () => {
                         </Col>
                         <Col>
                             <div style={{ display: "flex", alignItems: "center" }}>
-                                <label style={{ fontWeight: 500, marginRight: 8 }}>Loan Date</label>
+                                <label style={{ fontWeight: 500, marginRight: 8, color: "white" }}>Loan Date</label>
                                 <Form.Item
                                     name="loandate"
                                     rules={[{ required: true, message: "Loan Date is required" }]}
@@ -369,11 +419,11 @@ const LoanEntryMast = () => {
                         </Col>
                     </Row>
                 </div>
-                <Card   >
-                    <Row gutter={16} align="stretch">
+                <Card className="parent-card">
+                    <Row gutter={8} align="stretch">
                         <Col span={12}>
                             <Card
-
+                                className="custom-inner-card"
                                 style={{
                                     background: "#F0F5FF",
                                     height: "100%",
@@ -387,7 +437,7 @@ const LoanEntryMast = () => {
                                     Customer Details
                                 </div>
                                 <Row gutter={[16, 4]}>
-                                    <Col span={12}>
+                                    <Col span={24}>
                                         <Form.Item
                                             name="customerName"
                                             rules={[{ required: true, message: "Customer Name is required" }]}
@@ -401,7 +451,7 @@ const LoanEntryMast = () => {
                                             />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col span={24}>
                                         <Form.Item
                                             name="swdof"
                                             style={{ marginBottom: 6 }}
@@ -475,7 +525,7 @@ const LoanEntryMast = () => {
                                                 placeholder="Select State"
                                                 ref={stateRef}
                                                 onKeyDown={(e) => {
-                                                    if (e.key === "Enter") focusNext(mobileRef);
+                                                    focusNext(mobileRef);
                                                 }}
                                                 options={[
                                                     { label: "Telangana", value: "Telangana" },
@@ -500,20 +550,7 @@ const LoanEntryMast = () => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name="altmobile"
-                                            style={{ marginBottom: 6 }}
-                                        >
-                                            <label style={{ fontWeight: 500, display: 'block', marginBottom: 4 }}>Alternate Mobile No</label>
-                                            <Input
-                                                maxLength={10}
-                                                placeholder="Alternate Mobile No"
-                                                ref={altmobileRef}
-                                                onPressEnter={() => form.submit()}
-                                            />
-                                        </Form.Item>
-                                    </Col>
+
                                 </Row>
 
                             </Card>
@@ -523,6 +560,7 @@ const LoanEntryMast = () => {
 
                         <Col span={12}>
                             <Card
+                                className="custom-inner-card"
                                 style={{
                                     background: "#F0F5FF",
                                     height: "100%",
@@ -578,16 +616,16 @@ const LoanEntryMast = () => {
                                     </Col>
                                 </Row>
 
-                                <Row gutter={16} style={{ marginBottom: 16 }}>
-                                    <Col span={12}>
+                                <Row gutter={16} >
+                                    <Col span={24}>
                                         <Form.Item>
-                                            <label style={{ fontWeight: 500 }}>PAN No</label>
+                                            <label style={{ fontWeight: 500, }}>PAN No</label>
                                             <Input
                                                 placeholder="ABCDE1234F"
                                                 maxLength={10}
                                                 value={pan}
                                                 onChange={onChange}
-                                                style={{ textTransform: "uppercase" }}
+                                                style={{ textTransform: "uppercase", marginTop: "8px" }}
                                             />
                                             {error && (
                                                 <div style={{ color: "#ff4d4f", textAlign: "right", marginTop: 4, fontSize: 12 }}>
@@ -596,7 +634,7 @@ const LoanEntryMast = () => {
                                             )}
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col span={24}>
                                         <Form.Item>
                                             <label style={{ fontWeight: 500 }}>Aadhar No</label>
                                             <Input
@@ -605,6 +643,7 @@ const LoanEntryMast = () => {
                                                 inputMode="numeric"
                                                 value={aadhar}
                                                 onChange={onChangeAdhar}
+                                                style={{ marginTop: "6px" }}
                                             />
                                             {errorAadar && (
                                                 <div style={{ color: "#ff4d4f", textAlign: "right", marginTop: 4, fontSize: 12 }}>
@@ -615,17 +654,17 @@ const LoanEntryMast = () => {
                                     </Col>
                                 </Row>
 
-                                <Row gutter={16} style={{ marginBottom: 16 }}>
+                                <Row gutter={16} >
                                     <Col span={12}>
                                         <Form.Item name="refPerson">
                                             <label style={{ fontWeight: 500 }}>Reference Person</label>
-                                            <Input />
+                                            <Input style={{ marginTop: "6px", }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
                                         <Form.Item name="refMob">
                                             <label style={{ fontWeight: 500 }}>Ref Per Mob No</label>
-                                            <Input maxLength={10} />
+                                            <Input maxLength={10} style={{ marginTop: "6px", }} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -637,7 +676,7 @@ const LoanEntryMast = () => {
                     </Row>
                 </Card>
             </Form>
-            <Card style={{ background: "#c7d6f3", }}>
+            <Card className="parent-card" style={{ background: "#fff", }}>
                 <div style={{ height: "calc(100vh - 100px)" }}>
                     <Row gutter={12} style={{ height: "56%" }}>
                         {/* Left Column */}
@@ -648,8 +687,8 @@ const LoanEntryMast = () => {
                             >
                                 <div>
                                     <div style={{ fontWeight: "bold", fontSize: 15, marginBottom: 8 }}>Entry Items</div>
-                                    {/* Items Button with Popover */}
                                     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+
                                         <Popover
                                             trigger="click"
                                             overlayClassName="custom-popover"
@@ -660,12 +699,13 @@ const LoanEntryMast = () => {
                                                 <div
                                                     style={{
                                                         maxWidth: '90vw',
-                                                        height: 400, // Fixed height
+                                                        height: 460, // Fixed height for popover
                                                         overflowY: 'auto',
                                                         padding: 16,
                                                         position: 'relative',
                                                     }}
-                                                >                                                    <CloseOutlined
+                                                >
+                                                    <CloseOutlined
                                                         onClick={() => setVisible(false)}
                                                         style={{
                                                             position: 'absolute',
@@ -676,193 +716,261 @@ const LoanEntryMast = () => {
                                                             zIndex: 1,
                                                         }}
                                                     />
-                                                    <Card style={{ background: "#bbcdef", marginBottom: 12 }}>
-                                                        <Row gutter={12} wrap>
-                                                            <Col span={4}>
-                                                                <label>Item Name</label>
-                                                                <Select
-                                                                    ref={itemNameRef}
-                                                                    placeholder="Select Item"
-                                                                    style={{ width: '100%' }}
-                                                                    value={itemName}
-                                                                    onChange={(val) => {
-                                                                        setItemName(val);
-                                                                        setTimeout(() => purityRef.current?.focus(), 0);
-                                                                    }}
-                                                                >
-                                                                    <Select.Option value="Ring">Ring</Select.Option>
-                                                                    <Select.Option value="Necklace">Necklace</Select.Option>
-                                                                    <Select.Option value="Bangle">Bangle</Select.Option>
-                                                                </Select>
-                                                            </Col>
-                                                            <Col span={2}>
-                                                                <label>Purity</label>
-                                                                <Select
-                                                                    ref={purityRef}
-                                                                    placeholder="Select Purity"
-                                                                    style={{ width: '100%' }}
-                                                                    value={purity}
-                                                                    onChange={(val) => {
-                                                                        setPurity(val);
-                                                                        setTimeout(() => piecesRef.current?.focus(), 0);
-                                                                    }}
-                                                                >
-                                                                    <Select.Option value="22K">22K</Select.Option>
-                                                                    <Select.Option value="24K">24K</Select.Option>
-                                                                    <Select.Option value="18K">18K</Select.Option>
-                                                                </Select>
-                                                            </Col>
-                                                            <Col span={2}>
-                                                                <label>Pieces</label>
-                                                                <Input
-                                                                    ref={piecesRef}
-                                                                    type="number"
-                                                                    value={pieces}
-                                                                    onChange={(e) => setPieces(e.target.value)}
-                                                                    onKeyDown={(e) => e.key === 'Enter' && gwtRef.current?.focus()}
-                                                                />
-                                                            </Col>
-                                                            <Col span={2}>
-                                                                <label>GWT</label>
-                                                                <Input
-                                                                    ref={gwtRef}
-                                                                    type="number"
-                                                                    value={gwt}
-                                                                    onChange={(e) => setGwt(e.target.value)}
-                                                                    onKeyDown={(e) => e.key === 'Enter' && nwtRef.current?.focus()}
-                                                                />
-                                                            </Col>
-                                                            <Col span={2}>
-                                                                <label>NWT</label>
-                                                                <Input
-                                                                    ref={nwtRef}
-                                                                    type="number"
-                                                                    value={nwt}
-                                                                    onChange={(e) => setNwt(e.target.value)}
-                                                                    onKeyDown={(e) => e.key === 'Enter' && swtRef.current?.focus()}
-                                                                />
-                                                            </Col>
-                                                            <Col span={2}>
-                                                                <label>SWT</label>
-                                                                <Input
-                                                                    ref={swtRef}
-                                                                    type="number"
-                                                                    value={swt}
-                                                                    onChange={(e) => setSwt(e.target.value)}
-                                                                    onKeyDown={(e) => e.key === 'Enter' && rateRef.current?.focus()}
-                                                                />
-                                                            </Col>
-                                                            <Col span={2}>
-                                                                <label>Rate</label>
-                                                                <Input
-                                                                    ref={rateRef}
-                                                                    type="number"
-                                                                    value={rate}
-                                                                    onChange={(e) => setRate(e.target.value)}
-                                                                    onKeyDown={(e) => e.key === 'Enter' && amountRef.current?.focus()}
-                                                                />
-                                                            </Col>
-                                                            <Col span={3}>
-                                                                <label>Amount</label>
-                                                                <Input
-                                                                    ref={amountRef}
-                                                                    type="number"
-                                                                    value={amount}
-                                                                    onChange={(e) => setAmount(e.target.value)}
-                                                                    onKeyDown={(e) => e.key === 'Enter' && handleAddOrUpdateEntry()}
-                                                                />
-                                                            </Col>
-                                                            <Col span={2} style={{ display: 'flex', alignItems: 'center' }}>
-                                                                <Button
-                                                                    type="primary"
-                                                                    onClick={handleAddOrUpdateEntry}
-                                                                    style={{ width: '100%' }}
-                                                                >
-                                                                    {editingIndex !== null ? "Update" : "Add Entry"}
-                                                                </Button>
-                                                            </Col>
-                                                        </Row>
+                                                    <Card style={{ backgroundColor: "#F0F5FF" }}>
+                                                        <Card style={{
+                                                            background: "linear-gradient(to right, rgb(1, 64, 157), rgb(40, 135, 100))",
+                                                            marginBottom: 12
+                                                        }}>
+                                                            <Row gutter={12} wrap align="middle">
+                                                                <Col span={4}>
+                                                                    <label style={labelStyle}>Item Name</label>
+                                                                    <Select
+                                                                        ref={itemNameRef}
+                                                                        showSearch
+                                                                        placeholder="Select Item"
+                                                                        style={{ width: '100%' }}
+                                                                        value={itemName}
+                                                                        onChange={(val) => {
+                                                                            setItemName(val);
+                                                                            setTimeout(() => purityRef.current?.focus(), 0);
+                                                                        }}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && purityRef.current?.focus()}
+                                                                        optionFilterProp="children"
+                                                                        filterOption={(input, option) =>
+                                                                            option.children.toLowerCase().includes(input.toLowerCase())
+                                                                        }
+                                                                    >
+                                                                        <Select.Option value="Ring">Ring</Select.Option>
+                                                                        <Select.Option value="Necklace">Necklace</Select.Option>
+                                                                        <Select.Option value="Bangle">Bangle</Select.Option>
+                                                                    </Select>
+                                                                </Col>
+                                                                <Col span={2}>
+                                                                    <label style={labelStyle} >Purity</label>
+                                                                    <Select
+                                                                        ref={purityRef}
+                                                                        showSearch
+                                                                        placeholder="Select Purity"
+                                                                        style={{ width: '100%' }}
+                                                                        value={purity}
+                                                                        onChange={(val) => {
+                                                                            setPurity(val);
+                                                                            setTimeout(() => piecesRef.current?.focus(), 0);
+                                                                        }}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && piecesRef.current?.focus()}
+                                                                        optionFilterProp="children"
+                                                                        filterOption={(input, option) =>
+                                                                            option.children.toLowerCase().includes(input.toLowerCase())
+                                                                        }
+                                                                    >
+                                                                        <Select.Option value="22K">22K</Select.Option>
+                                                                        <Select.Option value="24K">24K</Select.Option>
+                                                                        <Select.Option value="18K">18K</Select.Option>
+                                                                    </Select>
+                                                                </Col>
+                                                                <Col span={2}>
+                                                                    <label style={labelStyle}>Pieces</label>
+                                                                    <Input
+                                                                        ref={piecesRef}
+                                                                        type="number"
+                                                                        value={pieces}
+                                                                        onChange={(e) => setPieces(e.target.value)}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && gwtRef.current?.focus()}
+                                                                    />
+                                                                </Col>
+                                                                <Col span={3}>
+                                                                    <label style={labelStyle}>Gross.Wt</label>
+                                                                    <Input
+                                                                        ref={gwtRef}
+                                                                        type="number"
+                                                                        style={inputStyle}
+                                                                        value={gwt}
+                                                                        onChange={(e) => setGwt(e.target.value)}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && swtRef.current?.focus()}
+                                                                    />
+                                                                </Col>
+
+                                                                <Col span={3}>
+                                                                    <label style={labelStyle}>Less.Wt</label>
+                                                                    <Input
+                                                                        ref={swtRef}
+                                                                        type="number"
+                                                                        style={inputStyle}
+
+                                                                        value={swt}
+                                                                        onChange={(e) => setSwt(e.target.value)}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && nwtRef.current?.focus()}
+                                                                    />
+                                                                </Col>
+                                                                <Col span={3}>
+                                                                    <label style={labelStyle}>Net.Wt</label>
+                                                                    <Input
+                                                                        ref={nwtRef}
+                                                                        type="number"
+                                                                        style={inputStyle}
+
+                                                                        value={nwt}
+                                                                        onChange={(e) => setNwt(e.target.value)}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && rateRef.current?.focus()}
+                                                                    />
+                                                                </Col>
+                                                                <Col span={2}>
+                                                                    <label style={labelStyle}>Rate</label>
+                                                                    <Input
+                                                                        ref={rateRef}
+                                                                        type="number"
+                                                                        value={rate}
+                                                                        style={inputStyle}
+
+                                                                        onChange={(e) => setRate(e.target.value)}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && amountRef.current?.focus()}
+                                                                    />
+                                                                </Col>
+                                                                <Col span={3}>
+                                                                    <label style={labelStyle}>Amount</label>
+                                                                    <Input
+                                                                        ref={amountRef}
+                                                                        type="number"
+                                                                        value={amount}
+                                                                        style={inputStyle}
+
+                                                                        onChange={(e) => setAmount(e.target.value)}
+                                                                        onKeyDown={(e) => e.key === 'Enter' && handleAddOrUpdateEntry()}
+                                                                    />
+                                                                </Col>
+                                                                <Col span={2} style={{ display: 'flex', alignItems: 'center', marginTop: 22 }}>
+                                                                    <Button
+                                                                        type="primary"
+                                                                        onClick={() => {
+                                                                            if (!itemName || !purity || !pieces || !gwt || !nwt || !swt || !rate || !amount) {
+                                                                                message.error("Please fill all item fields");
+                                                                                return;
+                                                                            }
+                                                                            handleAddOrUpdateEntry();
+                                                                            setItemName(null);
+                                                                            setPurity(null);
+                                                                            setPieces('');
+                                                                            setGwt('');
+                                                                            setNwt('');
+                                                                            setSwt('');
+                                                                            setRate('');
+                                                                            setAmount('');
+                                                                            setEditingIndex(null);
+                                                                            setTimeout(() => itemNameRef.current?.focus(), 0);
+                                                                        }}
+                                                                        icon={editingIndex !== null ? null : <PlusOutlined />}
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 32,
+                                                                            height: 32,
+                                                                            padding: 0,
+                                                                            display: 'flex',
+                                                                            alignItems: 'center',
+                                                                            justifyContent: 'center',
+                                                                        }}
+                                                                    >
+                                                                        {editingIndex !== null ? "✓" : null}
+                                                                    </Button>
+                                                                </Col>
+                                                            </Row>
+                                                        </Card>
+                                                        <Card>
+
+                                                            <Table
+                                                                className="custom-loan-table"
+
+                                                                columns={columnsWithActions}
+                                                                dataSource={tableData}
+                                                                pagination={false}
+                                                                size="small"
+                                                                rowKey="key"
+                                                                scroll={{ y: 200 }}
+                                                                style={{ marginBottom: 8 }}
+                                                                summary={pageData => {
+                                                                    const colIdx = {
+                                                                        sno: 0,
+                                                                        itemName: 1,
+                                                                        purity: 2,
+                                                                        pieces: 3,
+                                                                        gwt: 4,
+                                                                        nwt: 5,
+                                                                        swt: 6,
+                                                                        rate: 7,
+                                                                        amount: 8,
+                                                                        action: 9,
+                                                                    };
+                                                                    return (
+                                                                        <Table.Summary.Row>
+                                                                            <Table.Summary.Cell index={colIdx.sno}></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.itemName}></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.purity}></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.pieces}><b>{totals.pieces || 0}</b></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.gwt}><b>{totals.gwt.toFixed(3)}</b></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.swt}><b>{totals.swt.toFixed(3)}</b></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.nwt}><b>{totals.nwt.toFixed(3)}</b></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.rate}></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.amount}><b>{totals.amount.toFixed(2)}</b></Table.Summary.Cell>
+                                                                            <Table.Summary.Cell index={colIdx.action}></Table.Summary.Cell>
+                                                                        </Table.Summary.Row>
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <Row justify="end" gutter={8}>
+                                                                <Col>
+                                                                    <Button
+                                                                        onClick={() => {
+                                                                            setTableData([]);
+                                                                            setTotals({ gwt: 0, nwt: 0, swt: 0, amount: 0, pieces: 0 });
+                                                                            setItemName(null);
+                                                                            setPurity(null);
+                                                                            setPieces('');
+                                                                            setGwt('');
+                                                                            setNwt('');
+                                                                            setSwt('');
+                                                                            setRate('');
+                                                                            setAmount('');
+                                                                            setEditingIndex(null);
+                                                                            if (form && form.resetFields) form.resetFields();
+                                                                        }}
+                                                                    >
+                                                                        Refresh
+                                                                    </Button>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Button
+                                                                        type="primary"
+                                                                        onClick={() => {
+                                                                            const totalGWT = tableData.reduce((sum, row) => sum + (parseFloat(row.gwt) || 0), 0);
+                                                                            const totalNWT = tableData.reduce((sum, row) => sum + (parseFloat(row.nwt) || 0), 0);
+                                                                            const totalSWT = tableData.reduce((sum, row) => sum + (parseFloat(row.swt) || 0), 0);
+                                                                            const totalAmount = tableData.reduce((sum, row) => sum + (parseFloat(row.amount) || 0), 0);
+
+                                                                            setTotals({ gwt: totalGWT, nwt: totalNWT, swt: totalSWT, amount: totalAmount });
+                                                                            setVisible(false);
+                                                                        }}
+                                                                    >
+                                                                        OK
+                                                                    </Button>
+                                                                </Col>
+                                                            </Row>
+                                                        </Card>
                                                     </Card>
 
-                                                    <TableHeaderStyles>
-                                                        <Table
-                                                            columns={columnsWithActions}
-                                                            dataSource={tableData}
-                                                            pagination={false}
-                                                            size="small"
-                                                            rowKey="key"
-                                                            scroll={{ y: 200 }}
-                                                            style={{ marginBottom: 8 }}
-                                                            summary={pageData => {
-                                                                // Find the index of each column by key
-                                                                const colIdx = {
-                                                                    sno: 0,
-                                                                    itemName: 1,
-                                                                    purity: 2,
-                                                                    pieces: 3,
-                                                                    gwt: 4,
-                                                                    nwt: 5,
-                                                                    swt: 6,
-                                                                    rate: 7,
-                                                                    amount: 8,
-                                                                    action: 9,
-                                                                };
-                                                                return (
-                                                                    <Table.Summary.Row>
-                                                                        <Table.Summary.Cell index={colIdx.sno}></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.itemName}></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.purity}></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.pieces}><b>{totals.pieces || 0}</b></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.gwt}><b>{totals.gwt.toFixed(3)}</b></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.nwt}><b>{totals.nwt.toFixed(3)}</b></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.swt}><b>{totals.swt.toFixed(3)}</b></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.rate}></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.amount}><b>{totals.amount.toFixed(2)}</b></Table.Summary.Cell>
-                                                                        <Table.Summary.Cell index={colIdx.action}></Table.Summary.Cell>
-                                                                    </Table.Summary.Row>
-                                                                );
-                                                            }}
-                                                        />
-                                                    </TableHeaderStyles>
-                                                    <Row justify="end" gutter={8}>
-                                                        <Col>
-                                                            <Button
-                                                                onClick={() => {
-                                                                    setTableData([]);
-                                                                    setTotals({ gwt: 0, nwt: 0, swt: 0, amount: 0 });
-                                                                }}
-                                                            >
-                                                                Refresh
-                                                            </Button>
-                                                        </Col>
-                                                        <Col>
-                                                            <Button
-                                                                type="primary"
-                                                                onClick={() => {
-                                                                    const totalGWT = tableData.reduce((sum, row) => sum + (parseFloat(row.gwt) || 0), 0);
-                                                                    const totalNWT = tableData.reduce((sum, row) => sum + (parseFloat(row.nwt) || 0), 0);
-                                                                    const totalSWT = tableData.reduce((sum, row) => sum + (parseFloat(row.swt) || 0), 0);
-                                                                    const totalAmount = tableData.reduce((sum, row) => sum + (parseFloat(row.amount) || 0), 0);
-
-                                                                    setTotals({ gwt: totalGWT, nwt: totalNWT, swt: totalSWT, amount: totalAmount });
-                                                                    setVisible(false);
-                                                                }}
-                                                            >
-                                                                OK
-                                                            </Button>
-                                                        </Col>
-                                                    </Row>
                                                 </div>
                                             }
                                         >
                                             <Button
                                                 type="primary"
+                                                block
                                                 style={{
                                                     height: 40,
                                                     fontSize: 16,
                                                     fontWeight: "bold",
-                                                    backgroundColor: "#0d094e",
-                                                    borderColor: "#4A90E2",
+                                                    background: "linear-gradient(to right, rgb(1, 64, 157), rgb(40, 135, 100))",
+                                                    borderColor: "transparent",
+                                                    color: "#fff",
+                                                    maxWidth: 300,
+                                                    width: "100%",
                                                 }}
                                                 icon={<PlusOutlined style={{ fontSize: 18, fontWeight: "bold" }} />}
                                             >
@@ -870,24 +978,21 @@ const LoanEntryMast = () => {
                                             </Button>
                                         </Popover>
                                     </div>
-
-                                    {/* Totals Vertical */}
                                     <Row justify="center" style={{ marginBottom: 8 }}>
                                         <Col>
                                             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                                                 {[
-                                                    { label: "Total Pieces", value: totals.pieces },
-
-                                                    { label: "Total GWT", value: totals.gwt.toFixed(3) },
-                                                    { label: "Total NWT", value: totals.nwt.toFixed(3) },
-                                                    { label: "Total SWT", value: totals.swt.toFixed(3) },
-                                                    { label: "Total Amount", value: totals.amount.toFixed(2) },
+                                                    { label: "Stone weight", value: totals.swt.toFixed(3) },
+                                                    { label: "Gross Weight", value: totals.gwt.toFixed(3) },
+                                                    { label: "Net Weight", value: totals.nwt.toFixed(3) },
+                                                    { label: "Amount", value: totals.amount.toFixed(2) },
                                                 ].map((item, index) => (
                                                     <div
                                                         key={index}
                                                         style={{
                                                             display: "flex",
                                                             justifyContent: "flex-start",
+                                                            alignItems: "center",
                                                             minWidth: 250,
                                                         }}
                                                     >
@@ -901,111 +1006,134 @@ const LoanEntryMast = () => {
                                                         >
                                                             {item.label}
                                                         </span>
-                                                        <span style={{ margin: "0 6px" }}>:</span>
-                                                        <span
+                                                        <Input
+                                                            value={item.value}
+                                                            readOnly
                                                             style={{
-                                                                minWidth: 80,
-                                                                textAlign: "left",
-                                                                display: "inline-block",
+                                                                minWidth: 120,
+                                                                textAlign: "right",
+                                                                backgroundColor: "#f5f5f5",
                                                             }}
-                                                        >
-                                                            {item.value}
-                                                        </span>
+                                                        />
                                                     </div>
                                                 ))}
                                             </div>
                                         </Col>
                                     </Row>
 
+
                                 </div>
                             </Card>
                         </Col>
                         <Col span={12} style={{ height: "50%", display: "flex", flexDirection: "column" }}>
                             <Card
-                                style={{ background: "#F0F5FF", flex: 1, display: "flex", flexDirection: "column" }}
-                                bodyStyle={{ flex: 1, display: "flex", flexDirection: "column" }}
+                                style={{
+                                    background: "#F0F5FF",
+                                    flex: 1,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-start", // left align
+                                    paddingLeft: 32, // space from left side
+                                }}
+                                bodyStyle={{
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-start",
+                                }}
                             >
-                                <div>
-                                    <Form layout="vertical">
-                                        <Row gutter={16}>
-                                            <Col span={24}>
-                                                <Form.Item name="loanAmount">
-                                                    <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                                                        <label style={{ width: "60%", fontWeight: 500 }}>Loan Release Amount</label>
-                                                        <Input style={{ width: "40%" }} />
-                                                    </div>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <Col span={24}>
-                                                <Form.Item name="interestRate">
-                                                    <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                                                        <label style={{ width: "60%", fontWeight: 500 }}>Interest Rate (%)</label>
-                                                        <Input style={{ width: "40%" }} />
-                                                    </div>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <Col span={24}>
-                                                <Form.Item name="firstInterest">
-                                                    <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                                                        <label style={{ width: "60%", fontWeight: 500 }}>First Interest</label>
-                                                        <Input style={{ width: "40%" }} />
-                                                    </div>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <Col span={24}>
-                                                <Form.Item name="docCharges">
-                                                    <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                                                        <label style={{ width: "60%", fontWeight: 500 }}>Document Charges</label>
-                                                        <Input style={{ width: "40%" }} />
-                                                    </div>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <Col span={24}>
-                                                <Form.Item name="paidAmount">
-                                                    <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
-                                                        <label style={{ width: "60%", fontWeight: 500 }}>Paid Amount</label>
-                                                        <Input style={{ width: "40%" }} />
-                                                    </div>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 16 }}>
-                                            <Button
-                                                type="primary"
-                                                htmlType="submit"
-                                                onClick={() => {
-                                                    setTimeout(() => {
-                                                        loanNoRef.current && loanNoRef.current.focus();
-                                                    }, 0);
-                                                }}
-                                            >
-                                                {editingIndex !== null ? "Update" : "Submit"}
-                                            </Button>
-                                            <Button
-                                                onClick={() => {
-                                                    form.resetFields();
-                                                    setEditingIndex(null);
-                                                    setLoanNo();
-                                                    setLoanDate(getToday());
-                                                    setTimeout(() => {
-                                                        loanNoRef.current && loanNoRef.current.focus();
-                                                    }, 0);
-                                                }}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </div>
-                                    </Form>
+                                <div style={{ width: "100%", maxWidth: 500 }}>
+                                    {/* Left-aligned Heading */}
+                                    <div style={{ fontWeight: "bold", fontSize: 15, marginBottom: 8 }}>Interest Details</div>
+
+                                    {/* Interest Details Summary - editable and spaced */}
+                                    <Row justify="center" style={{ marginBottom: 8 }}>
+                                        <Col>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                                                {[
+                                                    { label: "Loan Release Amount", name: "loanAmount" },
+                                                    { label: "Interest Rate (%)", name: "interestRate" },
+                                                    { label: "First Interest", name: "firstInterest" },
+                                                    { label: "Document Charges", name: "docCharges" },
+                                                    { label: "Paid Amount", name: "paidAmount" },
+                                                ].map((item, index) => (
+                                                    <Form.Item
+                                                        key={item.name}
+                                                        name={item.name}
+                                                        style={{ marginBottom: 0 }}
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                display: "flex",
+                                                                alignItems: "center",
+                                                                minWidth: 250,
+                                                                gap: 16, // space between label and input
+                                                            }}
+                                                        >
+                                                            <span
+                                                                style={{
+                                                                    fontWeight: 500,
+                                                                    minWidth: 140,
+                                                                    textAlign: "left",
+                                                                    display: "inline-block",
+                                                                }}
+                                                            >
+                                                                {item.label}
+                                                            </span>
+                                                            <Input
+                                                                style={{
+                                                                    minWidth: 120,
+                                                                    textAlign: "right",
+                                                                    backgroundColor: "#fff",
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </Form.Item>
+                                                ))}
+                                            </div>
+                                        </Col>
+                                    </Row>
+
+                                    {/* Centered Buttons Below */}
+                                    <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 16 }}>
+
+                                        <Button
+                                            onClick={() => {
+                                                window.print();
+                                            }}
+                                        >
+                                            Print
+                                        </Button>
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            onClick={() => {
+                                                setTimeout(() => {
+                                                    loanNoRef.current && loanNoRef.current.focus();
+                                                }, 0);
+                                            }}
+                                        >
+                                            {editingIndex !== null ? "Update" : "Submit"}
+                                        </Button>
+
+                                        <Button
+                                            onClick={() => {
+                                                form.resetFields();
+                                                setEditingIndex(null);
+                                                setLoanNo();
+                                                setLoanDate(getToday());
+                                                setTimeout(() => {
+                                                    loanNoRef.current && loanNoRef.current.focus();
+                                                }, 0);
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
+
+                                    </div>
                                 </div>
                             </Card>
+
                         </Col>
                     </Row>
                 </div>

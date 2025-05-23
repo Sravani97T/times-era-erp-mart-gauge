@@ -9,15 +9,17 @@ import LoanMainProduct from "./Components/Assets/LoanMasters/LoanMainProduct";
 import LoanProductMaster from "./Components/Assets/LoanMasters/LoanProductMaster";
 import LoanPurity from "./Components/Assets/LoanMasters/LoanPrurity";
 import LoanEntryMast from "./Components/Assets/LoanMasters/LoanEntryMast";
-const App = ({onLogin}) => {
-  
- const tenantName = localStorage.getItem("tenantName");
+import DocumentCharges from "./Components/Assets/LoanMasters/DocumentCharges";
+import LoanIntrestRate from "./Components/Assets/LoanMasters/LoanIntrestRate";
+const App = () => {
+
+  const tenantName = localStorage.getItem("tenantName");
   const [isAuthenticated, setIsAuthenticated] = useState(
     // localStorage.getItem("isLoggedIn") === "true"
     tenantName
   );
 
-    const handleLogin = (name) => {
+  const handleLogin = (name) => {
     // localStorage.setItem("isLoggedIn", "true"); // Store login status
     setIsAuthenticated(name);
     console.log(name)
@@ -38,7 +40,10 @@ const App = ({onLogin}) => {
             <Route path="/loan-mainproduct" element={<LoanMainProduct />} />
             <Route path="/product-name" element={<LoanProductMaster />} />
             <Route path="/purity-master" element={<LoanPurity />} />
-                        <Route path="/entry-mast" element={<LoanEntryMast />} />
+            <Route path="/entry-mast" element={<LoanEntryMast />} />
+            <Route path="/doc-charges" element={<DocumentCharges />} />
+            <Route path="/loanintrest-rate" element={<LoanIntrestRate />} />
+
 
 
           </Route>
