@@ -975,11 +975,15 @@ font-weight: bold;
 }
 .custom-popover {
   min-width: 600px !important;  /* Adjust this value as needed */
-  max-width: 90% !important;
+  max-width: 85% !important;
+      margin-left: 275px !important;
+
 }
 
 .custom-popover .ant-popover-inner {
-  width: 100% !important;
+  width: 85% !important;
+    margin-left: 275px !important;
+
 }
 
 @media (max-width: 768px) {
@@ -987,4 +991,13 @@ font-weight: bold;
     min-width: 95vw !important;
     max-width: 125vw !important;
   }
+}
+.ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select {
+  width: 140px !important;
+  height: 105px !important;
+  border: 2px solid transparent !important;
+  border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) !important;
+  border-image-slice: 1 !important;
+  border-radius: 8px !important;
+  box-sizing: border-box !important;
 }
