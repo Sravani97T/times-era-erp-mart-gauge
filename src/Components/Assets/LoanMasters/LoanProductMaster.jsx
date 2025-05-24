@@ -318,41 +318,23 @@ const LoanProductMaster = () => {
                 >
                     <Row gutter={[16, 16]}>
                         <Col xs={24} sm={12}>
-                            <Form.Item
+                                           <Form.Item
                                 name="mname"
                                 label="Main Product"
                                 rules={[{ required: true, message: "Main Product is required" }]}
                             >
-                                <Input.Group compact>
-                                    <Input
-                                        style={{ display: "none" }}
-                                        tabIndex={-1}
-                                    />
-                                    <Select
-                                        ref={mnameRef}
-                                        showSearch
-                                        placeholder="Select Main Product"
-                                        optionFilterProp="children"
-                                        style={{ width: "100%" }}
-                                        value={form.getFieldValue("mname") || undefined}
-                                        onChange={value => {
-                                            form.setFieldsValue({ mname: value });
-                                        }}
-                                        onBlur={handleMainProductChange}
-                                        onInputKeyDown={e => {
-                                            if (e.key === "Enter") handleEnterPress(e, productnameRef);
-                                        }}
-                                        filterOption={(input, option) =>
-                                            (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
-                                        }
-                                    >
-                                        {mainProductOptions.map(opt => (
-                                            <Select.Option key={opt.value} value={opt.value}>
-                                                {opt.label}
-                                            </Select.Option>
-                                        ))}
-                                    </Select>
-                                </Input.Group>
+                                <Select
+                                    showSearch
+                                    placeholder="Select Main Product"
+                                    options={mainProductOptions}
+                                    ref={mnameRef}
+                                    onInputKeyDown={e => {
+                                        if (e.key === "Enter") handleEnterPress(e, productnameRef);
+                                    }}
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                                    }
+                                />
                             </Form.Item>
                         </Col>
                         <Col xs={24} sm={12}>

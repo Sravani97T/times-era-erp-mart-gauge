@@ -47,7 +47,72 @@ const LoanEntryMast = () => {
         swt: 0,
         amount: 0,
     });
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    console.log("isButtonDisabled", isButtonDisabled)
+    // Watch individual form fields
+    const customerName = Form.useWatch("customerName", form);
+    const swdof = Form.useWatch("swdof", form);
+    const address = Form.useWatch("address", form);
+    const pincode = Form.useWatch("pincode", form);
+    const city = Form.useWatch("city", form);
+    const state = Form.useWatch("state", form);
+    const mobile = Form.useWatch("mobile", form);
+    const [customerDetails, setCustomerDetails] = useState({
+        customerName: '',
+        swdof: '',
+        address: '',
+        pincode: '',
+        city: '',
+        state: '',
+        mobile: '',
+    });
 
+    //   // Enable button only when all required fields are filled
+    //   useEffect(() => {
+    //     if (
+    //       customerName?.trim()  !=="" &&
+    //       swdof?.trim() !=="" &&
+    //       address?.trim() !=="" &&
+    //       pincode?.trim() !=="" &&
+
+    //       mobile?.trim() !==""
+    //     ) {
+    //       setIsButtonDisabled(false);
+    //     } else {
+    //       setIsButtonDisabled(true);
+    //     }
+    //   }, [customerName, swdof, address, pincode, city, state, mobile]);
+
+    const handleInputChange = (field, value) => {
+        setCustomerDetails((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
+    useEffect(() => {
+        const {
+            customerName,
+            swdof,
+            address,
+            pincode,
+            city,
+            state,
+            mobile,
+        } = customerDetails;
+
+        // Check all required fields are filled and mobile has 10 digits
+        const isFormValid =
+            customerName.trim() &&
+            swdof.trim() &&
+            address.trim() &&
+            pincode.trim().length === 6 &&
+            city &&
+            state &&
+            mobile.trim().length === 10;
+
+        setIsButtonDisabled(!isFormValid);
+    }, [customerDetails]);
 
     // Auto-calculate Net Wt & Amount or Rate
     useEffect(() => {
@@ -370,7 +435,7 @@ const LoanEntryMast = () => {
     }, [tableData]);
 
     return (
-        <div style={{ background: "#f4f6f9" }}>
+        <div style={{ background: "#f4f6f9" }} className={`main-content ${visible ? "blurred" : ""}`}>
             <Form
                 form={form}
                 layout="vertical"
@@ -433,9 +498,23 @@ const LoanEntryMast = () => {
                                 }}
                             >
 
-                                <div style={{ fontWeight: "bold", fontSize: 15, marginBottom: 12 }}>
+                                <div
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 13,
+                                        marginBottom: 12,
+                                        padding: "4px 8px",
+                                        background: "linear-gradient(to right,rgb(130, 188, 231),rgb(123, 98, 156))",
+                                        borderRadius: "5px",
+                                        border: "1px solid #cce4f7",
+                                        display: "inline-block",
+                                        color: "#fff",
+                                    }}
+                                >
                                     Customer Details
                                 </div>
+
+
                                 <Row gutter={[16, 4]}>
                                     <Col span={24}>
                                         <Form.Item
@@ -448,6 +527,8 @@ const LoanEntryMast = () => {
                                                 placeholder="Customer Name"
                                                 ref={customerNameRef}
                                                 onPressEnter={() => focusNext(swdofRef)}
+                                                value={customerDetails.customerName}
+                                                onChange={(e) => handleInputChange('customerName', e.target.value)}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -461,6 +542,8 @@ const LoanEntryMast = () => {
                                                 placeholder="S/W/D Of"
                                                 ref={swdofRef}
                                                 onPressEnter={() => focusNext(addressRef)}
+                                                value={customerDetails.swdof}
+                                                onChange={(e) => handleInputChange('swdof', e.target.value)}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -476,6 +559,8 @@ const LoanEntryMast = () => {
                                                 placeholder="Address"
                                                 ref={addressRef}
                                                 onPressEnter={() => focusNext(pincodeRef)}
+                                                value={customerDetails.address}
+                                                onChange={(e) => handleInputChange('address', e.target.value)}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -491,6 +576,8 @@ const LoanEntryMast = () => {
                                                 placeholder="Pincode"
                                                 ref={pincodeRef}
                                                 onPressEnter={() => focusNext(cityRef)}
+                                                value={customerDetails.pincode}
+                                                onChange={(e) => handleInputChange('pincode', e.target.value)}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -506,6 +593,8 @@ const LoanEntryMast = () => {
                                                 onKeyDown={(e) => {
                                                     if (e.key === "Enter") focusNext(stateRef);
                                                 }}
+                                                value={customerDetails.city}
+                                                onChange={(value) => handleInputChange('city', value)}
                                                 options={[
                                                     { label: "Hyderabad", value: "Hyderabad" },
                                                     { label: "Mumbai", value: "Mumbai" },
@@ -527,6 +616,8 @@ const LoanEntryMast = () => {
                                                 onKeyDown={(e) => {
                                                     focusNext(mobileRef);
                                                 }}
+                                                value={customerDetails.state}
+                                                onChange={(value) => handleInputChange('state', value)}
                                                 options={[
                                                     { label: "Telangana", value: "Telangana" },
                                                     { label: "Maharashtra", value: "Maharashtra" },
@@ -545,6 +636,8 @@ const LoanEntryMast = () => {
                                                 maxLength={10}
                                                 placeholder="Mobile No"
                                                 ref={mobileRef}
+                                                value={customerDetails.mobile}
+                                                onChange={(e) => handleInputChange('mobile', e.target.value)}
                                                 onPressEnter={() => focusNext(altmobileRef)}
                                             />
                                         </Form.Item>
@@ -569,8 +662,19 @@ const LoanEntryMast = () => {
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <div style={{ fontWeight: "bold", fontSize: 15, marginBottom: 12 }}>
-                                    Personal Details
+ <div
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 13,
+                                        marginBottom: 12,
+                                        padding: "4px 8px",
+                                        background: "linear-gradient(to right,rgb(130, 188, 231),rgb(123, 98, 156))",
+                                        borderRadius: "5px",
+                                        border: "1px solid #cce4f7",
+                                        display: "inline-block",
+                                        color: "#fff",
+                                    }}
+                                >                                    Personal Details
                                 </div>
 
                                 <Row gutter={16} style={{ marginBottom: 16 }}>
@@ -676,8 +780,8 @@ const LoanEntryMast = () => {
                     </Row>
                 </Card>
             </Form>
-            <Card className="parent-card" style={{ background: "#fff", }}>
-                <div style={{ height: "calc(100vh - 100px)" }}>
+            <Card className="parent-card" style={{ background: "#fff", }} >
+                <div style={{ height: "calc(100vh - 100px)" }} className={visible ? "blurred-section" : ""}  >
                     <Row gutter={12} style={{ height: "56%" }}>
                         {/* Left Column */}
                         <Col span={12} style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -686,7 +790,19 @@ const LoanEntryMast = () => {
                                 bodyStyle={{ flex: 1, display: "flex", flexDirection: "column" }}
                             >
                                 <div>
-                                    <div style={{ fontWeight: "bold", fontSize: 15, marginBottom: 8 }}>Entry Items</div>
+                                     <div
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 13,
+                                        marginBottom: 12,
+                                        padding: "4px 8px",
+                                        background: "linear-gradient(to right,rgb(130, 188, 231),rgb(123, 98, 156))",
+                                        borderRadius: "5px",
+                                        border: "1px solid #cce4f7",
+                                        display: "inline-block",
+                                        color: "#fff",
+                                    }}
+                                >Product Detailes</div>
                                     <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
 
                                         <Popover
@@ -695,6 +811,7 @@ const LoanEntryMast = () => {
                                             placement="top"
                                             visible={visible}
                                             onVisibleChange={setVisible}
+                                            onOpenChange={setVisible}
                                             content={
                                                 <div
                                                     style={{
@@ -972,6 +1089,7 @@ const LoanEntryMast = () => {
                                                     maxWidth: 300,
                                                     width: "100%",
                                                 }}
+                                                disabled={isButtonDisabled === true}
                                                 icon={<PlusOutlined style={{ fontSize: 18, fontWeight: "bold" }} />}
                                             >
                                                 Items
@@ -982,10 +1100,11 @@ const LoanEntryMast = () => {
                                         <Col>
                                             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                                                 {[
-                                                    { label: "Stone weight", value: totals.swt.toFixed(3) },
                                                     { label: "Gross Weight", value: totals.gwt.toFixed(3) },
+                                                    { label: "Stone weight", value: totals.swt.toFixed(3) },
+
                                                     { label: "Net Weight", value: totals.nwt.toFixed(3) },
-                                                    { label: "Amount", value: totals.amount.toFixed(2) },
+                                                    { label: "Product Value", value: totals.amount.toFixed(2) },
                                                 ].map((item, index) => (
                                                     <div
                                                         key={index}
@@ -1032,8 +1151,7 @@ const LoanEntryMast = () => {
                                     flex: 1,
                                     display: "flex",
                                     flexDirection: "column",
-                                    alignItems: "flex-start", // left align
-                                    paddingLeft: 32, // space from left side
+
                                 }}
                                 bodyStyle={{
                                     width: "100%",
@@ -1041,15 +1159,27 @@ const LoanEntryMast = () => {
                                     flexDirection: "column",
                                     alignItems: "flex-start",
                                 }}
-                            >
+                                className={visible ? "blurred-section" : ""}                            >
                                 <div style={{ width: "100%", maxWidth: 500 }}>
                                     {/* Left-aligned Heading */}
-                                    <div style={{ fontWeight: "bold", fontSize: 15, marginBottom: 8 }}>Interest Details</div>
+                                    <div
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 13,
+                                        marginBottom: 12,
+                                        padding: "4px 8px",
+                                        background: "linear-gradient(to right,rgb(130, 188, 231),rgb(123, 98, 156))",
+                                        borderRadius: "5px",
+                                        border: "1px solid #cce4f7",
+                                        display: "inline-block",
+                                        color: "#fff",
+                                    }}
+                                >Interest Details</div>
 
                                     {/* Interest Details Summary - editable and spaced */}
-                                    <Row justify="center" style={{ marginBottom: 8 }}>
+                                    <Row justify="center" >
                                         <Col>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                                                 {[
                                                     { label: "Loan Release Amount", name: "loanAmount" },
                                                     { label: "Interest Rate (%)", name: "interestRate" },
@@ -1095,7 +1225,7 @@ const LoanEntryMast = () => {
                                     </Row>
 
                                     {/* Centered Buttons Below */}
-                                    <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 16 }}>
+                                    <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 20, marginBottom: 20 }}>
 
                                         <Button
                                             onClick={() => {
@@ -1138,6 +1268,16 @@ const LoanEntryMast = () => {
                     </Row>
                 </div>
             </Card>
+            <style>
+                {`
+                    .blurred-section {
+                        filter: blur(4px);
+                        pointer-events: none;
+                        user-select: none;
+                        transition: filter 0.2s;
+                    }
+                `}
+            </style>
         </div>
 
     );
